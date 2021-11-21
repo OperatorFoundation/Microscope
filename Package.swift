@@ -11,20 +11,29 @@ let package = Package(
         .library(
             name: "Microscope",
             targets: ["Microscope"]),
+        .library(name: "SwiftASTOptics", targets: ["SwiftASTOptics"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/OperatorFoundation/Gardener", from: "0.0.48"),
         .package(url: "https://github.com/OperatorFoundation/swift-ast", from: "0.19.12"),
-        .package(url: "https://github.com/OperatorFoundation/Sculpture", branch: "main")
+        .package(url: "https://github.com/OperatorFoundation/Sculpture", branch: "main"),
+        .package(url: "https://github.com/blanu/Focus", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Microscope",
-            dependencies: ["Gardener", "swift-ast", "Sculpture"]),
+            dependencies: [
+                "Gardener", "swift-ast", "Sculpture",
+                .product(name: "SculptureGenerate", package: "Sculpture")
+            ]),
+        .target(
+            name: "SwiftASTOptics",
+            dependencies: ["swift-ast", "Focus"]
+        ),
         .testTarget(
             name: "MicroscopeTests",
             dependencies: ["Microscope"]),
